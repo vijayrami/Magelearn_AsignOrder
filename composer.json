@@ -1,0 +1,22 @@
+{
+    "name": "magelearn/module-asign-guest-order",
+    "description": "Magento2 Module to Assign the guest orders to Customers.",
+    "type": "magento2-module",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "email": "vijaymrami@gmail.com",
+            "name": "vijay rami"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magelearn\\AsignOrder\\": ""
+        }
+    }
+}
