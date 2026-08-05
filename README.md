@@ -5,6 +5,16 @@ When you click Assign Customer, a popup opens displaying a customer grid. Simply
 
 If the wrong customer is assigned by mistake, you can easily correct it using the provided CLI command, which allows you to reassign the order to a different customer.
 
+## CLI Command
+
+-- Magento CLI command for reassigning an order to a different customer
+
+php bin/magento magelearn:order:customer:reassign <order_increment_id> <customer_id>
+
+-- Magento CLI command for Check and optionally correct order state and status
+
+php bin/magento magelearn:order:check
+
 ## How to Install
 -- Download the Zip and Create a folder inside app/code/Magelearn/AsignOrder in your Magento Root Directory.
 
@@ -17,15 +27,4 @@ If the wrong customer is assigned by mistake, you can easily correct it using th
 ![click assign customer](/assets/step_2.png "click assign customer")
 
 ![ordder comment](/assets/step_3.png "ordder comment")
-
-## CLI Command
-
--- Magento CLI command for reassigning an order to a different customer
-
-php bin/magento magelearn:order:customer:reassign <order_increment_id> <customer_id>
-
--- Magento CLI command for Check and optionally correct order state and status
-
-php bin/magento magelearn:order:check
-
 
