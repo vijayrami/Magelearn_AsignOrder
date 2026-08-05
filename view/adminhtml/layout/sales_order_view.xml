@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magelearn_AsignOrder::css/email-popup.css" media="all" />
+    </head>
     <body>
         <referenceContainer name="content">
-            <block class="Magelearn\AsignOrder\Block\Adminhtml\Customer\Assign"  name="magelearn_customer_assign"
-                   template="Magelearn_AsignOrder::customer/assign.phtml"/>
+            <block class="Magelearn\AsignOrder\Block\Adminhtml\Customer\AssignGuestOrder"  name="magelearn_customer_assign"
+                   template="Magelearn_AsignOrder::customer/assignguestorder.phtml"/>
         </referenceContainer>
     </body>
 </page>

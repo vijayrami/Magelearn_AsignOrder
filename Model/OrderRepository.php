@@ -7,17 +7,20 @@ namespace Magelearn\AsignOrder\Model;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magelearn\AsignOrder\Api\OrderRepositoryInterface;
-
-use function __;
 
 class OrderRepository implements OrderRepositoryInterface
 {
+    public function __construct(
+        private readonly CollectionFactory $orderCollectionFactory
+    ) {
+    }
+
     /**
-     * Reassign order to a customer by updating customer_id
+     * Updates the order with the specified customer's information.
      *
-     * Uses direct SQL to avoid triggering unnecessary observers/plugins
-     * while still respecting transaction scope
+     * The caller is responsible for persisting the order.
      */
     public function reassignOrderToCustomer(
         OrderInterface $order,
@@ -39,5 +42,26 @@ class OrderRepository implements OrderRepositoryInterface
                 )
             );
         }
+    }
+
+    /**
+     * Get order by increment ID
+     *
+     * @throws LocalizedException
+     */
+    public function getByIncrementId(
+        string $incrementId
+    ): OrderInterface {
+        $order = $this->orderCollectionFactory->create()
+            ->addFieldToFilter('increment_id', $incrementId)
+            ->getFirstItem();
+
+        if (!$order->getId()) {
+            throw new LocalizedException(
+                __('Order "%1" does not exist.', $incrementId)
+            );
+        }
+
+        return $order;
     }
 }

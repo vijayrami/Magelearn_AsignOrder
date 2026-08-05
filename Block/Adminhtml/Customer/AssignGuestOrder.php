@@ -10,9 +10,9 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
-class Assign extends Template
+class AssignGuestOrder extends Template
 {
-    private const ADMIN_URL_POPUP = 'assigncustomer/customer/assign';
+    private const ADMIN_URL_POPUP = 'assigncustomer/customer/assignguestorder';
     private const ADMIN_URL_GRID = 'assigncustomer/customer/grid';
 
     /**

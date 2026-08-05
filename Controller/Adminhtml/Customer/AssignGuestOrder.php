@@ -8,6 +8,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Model\Config\Share;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
@@ -15,13 +16,14 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Magelearn\AsignOrder\Api\OrderMigrationServiceInterface;
 
-class Assign extends Action
+class AssignGuestOrder extends Action
 {
     public const ADMIN_RESOURCE = 'Magento_Customer::manage';
 
     public function __construct(
         Context $context,
         private readonly Session $authSession,
+        private readonly Share $shareConfig,
         private readonly JsonFactory $resultJsonFactory,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly CustomerRepositoryInterface $customerRepository,
@@ -48,13 +50,16 @@ class Assign extends Action
             $order = $this->orderRepository->get($orderId);
             $customer = $this->customerRepository->getById($customerId);
 
+            $orderWebsiteId = (int) $order->getStore()->getWebsiteId();
+            $customerWebsiteId = (int) $customer->getWebsiteId();
+
             if (!$order->getCustomerIsGuest()) {
                 throw new LocalizedException(
                     __('This order is already assigned to a customer.')
                 );
             }
 
-            if ((int) $order->getStore()->getWebsiteId() !== (int) $customer->getWebsiteId()) {
+            if (!$this->shareConfig->isGlobalScope() && $orderWebsiteId !== $customerWebsiteId) {
                 throw new LocalizedException(
                     __('Customer belongs to a different website.')
                 );
@@ -80,6 +85,17 @@ class Assign extends Action
 
             $this->orderRepository->save($order);
 
+            $this->logger->info(
+                'Guest order migrated',
+                [
+                    'order_id' => $order->getId(),
+                    'order_increment_id' => $order->getIncrementId(),
+                    'customer_id' => $customer->getId(),
+                    'customer_email' => $customer->getEmail(),
+                    'admin_user' => $adminUsername,
+                ]
+            );
+
             $resultJson->setData([
                 'error' => false,
                 'message' => __(
@@ -103,7 +119,7 @@ class Assign extends Action
                 [
                     'order_id' => $orderId ?? null,
                     'customer_id' => $customerId ?? null,
-                    'exception' => $e,
+                    'exception' => $e->getMessage(),
                 ]
             );
 

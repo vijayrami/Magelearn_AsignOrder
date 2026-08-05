@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-// phpcs:disable Magento2.Security.XssTemplate.FoundUnescaped
-
 /** @var Magelearn\AsignOrder\Block\Adminhtml\Customer\Assign $block
  * @var $escaper Magento\Framework\Escaper */
 
@@ -16,13 +14,13 @@ declare(strict_types=1);
           method="post"
           data-mage-init='{"validation": {"errorClass": "mage-error"}}' >
         <div class="wrapper">
-            <p><?= __('Search and assign this guest order to a customer account.') ?></p>
-            <?= $block->getBlockHtml('formkey') ?>
-            <input type="hidden" name="order_id" value="<?= $block->getOrderId() ?>" />
+            <p><?= $escaper->escapeHtml(__('Search and assign this guest order to a customer account.')) ?></p>
+            <?= /* @noEscape */ $block->getBlockHtml('formkey') ?>
+            <input type="hidden" name="order_id" value="<?= (int) $block->getOrderId() ?>" />
             <input type="hidden" id="customer-id" name="customer_id" />
             <div id="customer-grid-container">
                 <div class="admin__data-grid-loading-mask">
-                    <?= __('Loading customers...') ?>
+                    <?= $escaper->escapeHtml(__('Loading customers...')) ?>
                 </div>
             </div>
 
@@ -43,9 +41,9 @@ declare(strict_types=1);
 {
     "*": {
         "magelearnAssignCustomer": {
-            "postUrl": "<?= $block->getAdminPostUrl() ?>",
-            "gridUrl": "<?= $block->getGridUrl() ?>",
-            "buttonLabel": "<?= __('Assign Customer') ?>"
+            "postUrl": "<?= $escaper->escapeUrl($block->getAdminPostUrl()) ?>",
+            "gridUrl": "<?= $escaper->escapeUrl($block->getGridUrl()) ?>",
+            "buttonLabel": "<?= $escaper->escapeJs((string) __('Assign Customer')) ?>"
         }
     }
 }

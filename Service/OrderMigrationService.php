@@ -11,8 +11,6 @@ use Psr\Log\LoggerInterface;
 use Magelearn\AsignOrder\Api\OrderMigrationServiceInterface;
 use Magelearn\AsignOrder\Api\OrderRepositoryInterface;
 
-use function __;
-
 class OrderMigrationService implements OrderMigrationServiceInterface
 {
     public function __construct(
@@ -22,13 +20,12 @@ class OrderMigrationService implements OrderMigrationServiceInterface
     }
 
     /**
-     * Migrate a guest order to a customer account
+     * Migrate a guest order to a customer account.
      *
      * This method:
-     * 1. Validates the order is a guest order
-     * 2. Updates the order.customer_id in a database transaction
-     * 3. Logs the migration for audit purposes
-     * 4. Handles failures gracefully with rollback
+     * 1. Validates that the order is a guest order.
+     * 2. Updates the in-memory order customer data.
+     * 3. Defers persistence to the caller.
      *
      * @throws LocalizedException
      */
@@ -48,16 +45,6 @@ class OrderMigrationService implements OrderMigrationServiceInterface
             $this->orderRepository->reassignOrderToCustomer(
                 $order,
                 $customer
-            );
-
-            $this->logger->info(
-                'Guest order migrated',
-                [
-                    'order_id' => $order->getId(),
-                    'order_increment_id' => $order->getIncrementId(),
-                    'customer_id' => $customer->getId(),
-                    'customer_email' => $customer->getEmail(),
-                ]
             );
         } catch (\Exception $e) {
             $this->logger->error(

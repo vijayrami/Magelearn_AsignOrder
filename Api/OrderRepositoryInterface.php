@@ -19,4 +19,15 @@ interface OrderRepositoryInterface
      * @throws LocalizedException
      */
     public function reassignOrderToCustomer(OrderInterface $order, CustomerInterface $customer): void;
+
+    /**
+     * Get order by increment ID
+     *
+     * @param string $incrementId
+     * @return OrderInterface
+     * @throws LocalizedException
+     */
+    public function getByIncrementId(
+        string $incrementId
+    ): OrderInterface;
 }
