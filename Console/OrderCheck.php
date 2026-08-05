@@ -59,7 +59,7 @@ class OrderCheck extends Command
 
     protected function configure(): void
     {
-        $this->setName('hellyhansen:order:check')
+        $this->setName('magelearn:order:check')
             ->setDescription('Check and optionally correct order state and status')
             ->addOption(self::OPTION_INCREMENT_ID, null, InputOption::VALUE_OPTIONAL, 'Order Id')
             ->addOption(self::OPTION_FROM_DATE, null, InputOption::VALUE_OPTIONAL, 'Order Created from Date')
