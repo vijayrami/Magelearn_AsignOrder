@@ -1,4 +1,4 @@
-# Magelearn_AsignOrder
+# Magelearn_AssignOrder
 This extension adds an Assign Customer popup to the Sales Order View page in the Magento Admin, allowing you to assign a guest order to an existing customer.
 
 When you click Assign Customer, a popup opens displaying a customer grid. Simply search for and select the appropriate customer, then assign the guest order to that customer.
