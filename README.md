@@ -16,7 +16,7 @@ php bin/magento magelearn:order:customer:reassign <order_increment_id> <customer
 php bin/magento magelearn:order:check
 
 ## How to Install
--- Download the Zip and Create a folder inside app/code/Magelearn/AsignOrder in your Magento Root Directory.
+-- Download the Zip and Create a folder inside app/code/Magelearn/AssignOrder in your Magento Root Directory.
 
 -- Extract the Zip and Run Magento Commands.
 
